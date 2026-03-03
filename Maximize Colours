@@ -1,0 +1,58 @@
+import sys
+input = sys.stdin.readline
+
+T = int(input())
+for _ in range(T):
+    X, Y, Z = map(int, input().split())
+    
+    max_colours = 0
+    
+    # Try all combinations of making secondary colours (0 or 1 time each)
+    # There are only 2^3 = 8 combinations
+    for use_RG in [0, 1]:  # yellow
+        for use_GB in [0, 1]:  # cyan
+            for use_RB in [0, 1]:  # magenta
+                
+                r = X
+                g = Y
+                b = Z
+                
+                # Apply mixes
+                if use_RG:
+                    if r > 0 and g > 0:
+                        r -= 1
+                        g -= 1
+                    else:
+                        continue
+                        
+                if use_GB:
+                    if g > 0 and b > 0:
+                        g -= 1
+                        b -= 1
+                    else:
+                        continue
+                        
+                if use_RB:
+                    if r > 0 and b > 0:
+                        r -= 1
+                        b -= 1
+                    else:
+                        continue
+                
+                # Count distinct colours
+                count = 0
+                
+                # Primary
+                if r > 0:
+                    count += 1
+                if g > 0:
+                    count += 1
+                if b > 0:
+                    count += 1
+                
+                # Secondary
+                count += use_RG + use_GB + use_RB
+                
+                max_colours = max(max_colours, count)
+    
+    print(max_colours)
